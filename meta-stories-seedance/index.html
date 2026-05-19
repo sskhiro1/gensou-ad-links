@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>gensou.ai App Storeへ移動中</title>
+  <meta name="robots" content="noindex,nofollow">
+  <meta http-equiv="refresh" content="2; url=https://apps.apple.com/jp/app/gensou-ai/id6764897270?ct=meta_stories_seedance_20260519">
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #fbfbf8;
+      --ink: #191919;
+      --muted: #68706f;
+      --line: #e8ebe6;
+      --mint: #62c6a5;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 78% 14%, rgba(98, 198, 165, .16), transparent 28%),
+        linear-gradient(180deg, #fff 0, var(--bg) 100%);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    main {
+      width: min(440px, 100%);
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, .88);
+      box-shadow: 0 20px 60px rgba(24, 28, 26, .08);
+      text-align: center;
+    }
+
+    .brand {
+      margin: 0 0 18px;
+      font: 950 30px/1 "Arial Black", Impact, sans-serif;
+      letter-spacing: .02em;
+    }
+
+    .brand span { color: var(--mint); }
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 12px 0 0;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      margin-top: 22px;
+      padding: 0 18px;
+      border-radius: 12px;
+      color: #fff;
+      background: var(--mint);
+      font-weight: 900;
+      text-decoration: none;
+    }
+  </style>
+  <script>
+    const CAMPAIGN_ID = "meta_stories_seedance_20260519";
+    const params = new URLSearchParams(window.location.search);
+    const source = params.get("src") || "meta_story";
+    const placement = params.get("placement") || "";
+    const destination = new URL("https://apps.apple.com/jp/app/gensou-ai/id6764897270");
+
+    destination.searchParams.set("ct", CAMPAIGN_ID);
+    destination.searchParams.set("pt", "meta");
+    destination.searchParams.set("src", source);
+    if (placement) destination.searchParams.set("placement", placement);
+
+    function trackClick() {
+      const body = JSON.stringify({
+        event: "meta_story_appstore_redirect",
+        path: `${window.location.pathname}${window.location.search}`,
+        referrer: document.referrer || null,
+        props: {
+          campaign_id: CAMPAIGN_ID,
+          source,
+          placement: placement || null,
+          destination: destination.toString(),
+          landing_host: window.location.host
+        }
+      });
+
+      try {
+        fetch("https://gensou.ai/api/funnel", {
+          method: "POST",
+          mode: "no-cors",
+          keepalive: true,
+          body
+        });
+      } catch (_) {
+        // Redirect still matters if client-side tracking is blocked.
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const fallback = document.querySelector("[data-app-store-link]");
+      fallback.href = destination.toString();
+      trackClick();
+      window.setTimeout(() => window.location.replace(destination.toString()), 700);
+    });
+  </script>
+</head>
+<body>
+  <main>
+    <p class="brand">GENSOU<span>✦</span></p>
+    <h1>App Storeへ移動しています</h1>
+    <p>移動しない場合は、下のボタンからgensou.aiを開いてください。</p>
+    <a data-app-store-link href="https://apps.apple.com/jp/app/gensou-ai/id6764897270?ct=meta_stories_seedance_20260519">App Storeで開く</a>
+  </main>
+</body>
+</html>
