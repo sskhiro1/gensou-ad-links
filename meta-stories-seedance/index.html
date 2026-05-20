@@ -163,9 +163,9 @@
     destination.searchParams.set("src", source);
     if (placement) destination.searchParams.set("placement", placement);
 
-    function trackClick() {
+    function sendFunnelEvent(eventName, extraProps = {}) {
       const body = JSON.stringify({
-        event: "meta_story_appstore_click",
+        event: eventName,
         path: `${window.location.pathname}${window.location.search}`,
         referrer: document.referrer || null,
         props: {
@@ -173,7 +173,8 @@
           source,
           placement: placement || null,
           destination: destination.toString(),
-          landing_host: window.location.host
+          landing_host: window.location.host,
+          ...extraProps
         }
       });
 
@@ -185,11 +186,17 @@
           body
         });
       } catch (_) {
-        // Redirect still matters if client-side tracking is blocked.
+        // The page and redirect should keep working if client-side tracking is blocked.
       }
     }
 
+    function trackClick() {
+      sendFunnelEvent("meta_story_appstore_click", { clicked_at: new Date().toISOString() });
+    }
+
     window.addEventListener("DOMContentLoaded", () => {
+      sendFunnelEvent("meta_story_landing_view", { loaded_at: new Date().toISOString() });
+
       const fallback = document.querySelector("[data-app-store-link]");
       fallback.href = destination.toString();
       fallback.addEventListener("click", trackClick);
