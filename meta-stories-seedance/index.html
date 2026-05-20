@@ -3,152 +3,22 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>gensou.ai | かんたん3ステップで映画級AI動画</title>
+  <title>App Storeへ移動中...</title>
   <meta name="robots" content="noindex,nofollow">
   <style>
-    :root {
-      color-scheme: light;
-      --bg: #fbfbf8;
-      --ink: #191919;
-      --muted: #68706f;
-      --line: #e8ebe6;
-      --green: #11a944;
-      --green-dark: #08772d;
-      --mint: #e9f7ef;
-    }
-
-    * { box-sizing: border-box; }
-
     body {
-      margin: 0;
+      display: grid;
       min-height: 100vh;
-      color: var(--ink);
-      background: linear-gradient(180deg, #fff 0, var(--bg) 100%);
+      margin: 0;
+      place-items: center;
+      color: #1b1b1b;
+      background: #fff;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
-    main {
-      width: min(520px, 100%);
-      min-height: 100vh;
-      margin: 0 auto;
-      padding: 34px 22px 28px;
-      text-align: center;
-    }
-
-    .brand {
-      margin: 0 0 22px;
-      font-size: 32px;
-      font-weight: 950;
-      letter-spacing: 0;
-    }
-
-    .brand span { color: var(--green); }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(38px, 10vw, 58px);
-      line-height: 1.05;
-      letter-spacing: 0;
-    }
-
-    h1 strong {
-      color: var(--green);
-      font-weight: 950;
-    }
-
-    .subhead {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 42px;
-      margin: 18px auto 0;
-      padding: 0 18px;
-      border: 2px solid var(--green);
-      border-radius: 999px;
-      font-size: 19px;
-      font-weight: 900;
-    }
-
-    p {
-      margin: 12px 0 0;
-      color: var(--muted);
-      line-height: 1.8;
-    }
-
-    .features {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin: 28px 0;
-    }
-
-    .feature {
-      min-height: 110px;
-      padding: 14px 10px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: #fff;
-      font-size: 13px;
-      font-weight: 800;
-      line-height: 1.45;
-    }
-
-    .icon {
-      display: grid;
-      width: 42px;
-      height: 42px;
-      margin: 0 auto 10px;
-      place-items: center;
-      border-radius: 13px;
-      color: var(--green);
-      background: var(--mint);
-      font-size: 24px;
-      font-weight: 950;
-    }
-
-    .preview {
-      margin: 6px 0 28px;
-      padding: 20px;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      background: #fff;
-      box-shadow: 0 18px 50px rgba(24, 28, 26, .08);
-      text-align: left;
-    }
-
-    .preview h2 {
-      margin: 0;
-      font-size: 22px;
-      line-height: 1.35;
-      letter-spacing: 0;
-    }
-
-    .preview p {
-      margin-top: 8px;
-      font-size: 15px;
-    }
-
     a {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      min-height: 62px;
-      padding: 0 22px;
-      border-radius: 999px;
-      color: #fff;
-      background: linear-gradient(180deg, var(--green), var(--green-dark));
-      box-shadow: 0 14px 30px rgba(17, 169, 68, .28);
-      font-size: 24px;
-      font-weight: 900;
-      text-decoration: none;
-    }
-
-    small {
-      display: block;
-      margin-top: 12px;
-      color: var(--muted);
-      line-height: 1.6;
+      color: #0a7c32;
+      font-weight: 700;
     }
   </style>
   <script>
@@ -163,7 +33,7 @@
     destination.searchParams.set("src", source);
     if (placement) destination.searchParams.set("placement", placement);
 
-    function sendFunnelEvent(eventName, extraProps = {}) {
+    function sendFunnelEvent(eventName) {
       const body = JSON.stringify({
         event: eventName,
         path: `${window.location.pathname}${window.location.search}`,
@@ -174,7 +44,7 @@
           placement: placement || null,
           destination: destination.toString(),
           landing_host: window.location.host,
-          ...extraProps
+          happened_at: new Date().toISOString()
         }
       });
 
@@ -186,42 +56,27 @@
           body
         });
       } catch (_) {
-        // The page and redirect should keep working if client-side tracking is blocked.
+        // Redirect must still work if tracking is blocked.
       }
     }
 
-    function trackClick() {
-      sendFunnelEvent("meta_story_appstore_click", { clicked_at: new Date().toISOString() });
+    function redirectToAppStore() {
+      sendFunnelEvent("meta_story_appstore_redirect");
+      window.location.replace(destination.toString());
     }
 
     window.addEventListener("DOMContentLoaded", () => {
-      sendFunnelEvent("meta_story_landing_view", { loaded_at: new Date().toISOString() });
-
       const fallback = document.querySelector("[data-app-store-link]");
       fallback.href = destination.toString();
-      fallback.addEventListener("click", trackClick);
+      fallback.addEventListener("click", () => sendFunnelEvent("meta_story_appstore_manual_click"));
+      redirectToAppStore();
     });
   </script>
 </head>
 <body>
   <main>
-    <p class="brand">gensou<span>.ai</span></p>
-    <h1>かんたん3ステップで<br><strong>映画級AI動画</strong></h1>
-    <div class="subhead">SNS投稿・商品PRにも</div>
-
-    <section class="features" aria-label="gensou.aiの特徴">
-      <div class="feature"><div class="icon">⚡</div>最短10秒で<br>スピード生成</div>
-      <div class="feature"><div class="icon">✓</div>商用利用OK<br>安心して使える</div>
-      <div class="feature"><div class="icon">✦</div>プロ品質の<br>高画質AI動画</div>
-    </section>
-
-    <section class="preview">
-      <h2>テキストや画像から、すぐ使えるAI動画を作成</h2>
-      <p>Seedance 2.0、Kling 4K、Veo 3などの最新モデルで、広告・PR・SNS向けの動画をかんたんに生成できます。</p>
-    </section>
-
-    <a data-app-store-link href="https://apps.apple.com/jp/app/gensou-ai/id6764897270?ct=meta_stories_seedance_20260519">App Storeで開く</a>
-    <small>iPhone / iPad対応。ボタンを押すとApp Storeに移動します。</small>
+    <p>App Storeへ移動しています。</p>
+    <p><a data-app-store-link href="https://apps.apple.com/jp/app/gensou-ai/id6764897270">移動しない場合はこちら</a></p>
   </main>
 </body>
 </html>
